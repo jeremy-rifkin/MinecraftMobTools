@@ -1,0 +1,16 @@
+name: MobTools
+version: 0.1
+author: Rifkin
+main: dev.rifkin.MobTools.MobTools
+api-version: 1.16
+website: rifkin.dev
+commands:
+  mksphere:
+    description: make a particle sphere
+    usage: /mksphere <radius> [semisphere?] [force visible?]
+  dspheres:
+    description: delete spheres
+    usage: /dspheres
+  showspawn:
+    description: show spawnable spaces
+    usage: /showspawn

@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MobTools:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MobTools_jar</output-path>
+    <root id="archive" name="MobTools.jar">
+      <element id="module-output" name="MobTools" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/spigot-api-1.16.4-R0.1-20201203.083325-28.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/spigot-1.16.4.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

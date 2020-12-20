@@ -7,6 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CommandBedrockCageFinder implements CommandExecutor {
+	// This is a little janky but... It'll work. Since all commands are executed with the same instance of this class,
+	// these variables are basically just statics. They'll be set for each commend then reset to null later.
 	private World world;
 	private UniqueHistoryQueue<Location> queue;
 	private int found;
@@ -35,7 +37,7 @@ public class CommandBedrockCageFinder implements CommandExecutor {
 				Location l = queue.pop();
 				if(l.getY() != 127) {
 					player.sendMessage("[" + ChatColor.RED + "ORB" + ChatColor.RESET + "]: Internal Error: Initial location Y=" + l.getY());
-					return false;
+					break;
 				}
 				check_location(l.clone());
 				checks++;
@@ -48,6 +50,10 @@ public class CommandBedrockCageFinder implements CommandExecutor {
 					break;
 			}
 			player.sendMessage("[" + ChatColor.RED + "ORB" + ChatColor.RESET + "]: Bedrock search ended");
+			// reset our "statics"
+			world = null;
+			queue = null;
+			player = null;
 		}
 		return true;
 	}

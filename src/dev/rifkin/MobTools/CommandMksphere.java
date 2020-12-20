@@ -32,13 +32,13 @@ public class CommandMksphere implements CommandExecutor {
 			if(args.length > 2) {
 				force_vis = Boolean.parseBoolean(args[2]);
 			}
-			// user info
-			player.sendMessage("[" + ChatColor.GREEN + "ORB" + ChatColor.RESET + "]: created a sphere r = " + radius);
-			player.sendMessage("[" + ChatColor.GREEN + "ORB" + ChatColor.RESET + "]: use \"/dsphere\" to remove all spheres");
 			// setup runnable
 			SphereGenerator generator = new SphereGenerator(player.getLocation(), radius, semisphere, force_vis);
 			BukkitTask task = generator.runTaskTimer(MobTools.getInstance(), 0, 20);
 			SphereManager.registerTask(task, player);
+			// user info
+			player.sendMessage("[" + ChatColor.GREEN + "ORB" + ChatColor.RESET + "]: created a sphere r = " + radius);
+			player.sendMessage("[" + ChatColor.GREEN + "ORB" + ChatColor.RESET + "]: use \"/cancelspheres\" to remove all your spheres");
 		}
 		return true;
 	}

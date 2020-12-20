@@ -13,7 +13,8 @@ public class CommandShowspawn implements CommandExecutor {
 			Player player = (Player) sender;
 			SpawnGenerator generator = new SpawnGenerator(player);
 			BukkitTask task = generator.runTaskTimer(MobTools.getInstance(), 0, 10);
-			MobTools.getInstance().registerTask(task);
+			// temporary...
+			SphereManager.registerTask(task, player);
 		}
 		return true;
 	}

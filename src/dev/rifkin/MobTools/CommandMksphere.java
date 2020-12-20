@@ -38,7 +38,7 @@ public class CommandMksphere implements CommandExecutor {
 			// setup runnable
 			SphereGenerator generator = new SphereGenerator(player.getLocation(), radius, semisphere, force_vis);
 			BukkitTask task = generator.runTaskTimer(MobTools.getInstance(), 0, 20);
-			MobTools.getInstance().registerTask(task);
+			SphereManager.registerTask(task, player);
 		}
 		return true;
 	}

@@ -6,69 +6,48 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
-
 public class CommandBedrockCageFinder implements CommandExecutor {
-	private class UniqueHistoryQueue<T> {
-		private final LinkedList<T> queue = new LinkedList<T>();
-		private final HashSet<T> set = new HashSet<T>();
-		public void push(T item) {
-			if(set.add(item)) {
-				queue.add(item);
-			}
-		}
-		public T pop() throws NoSuchElementException {
-			return queue.remove();
-		}
-		public void clear() {
-			queue.clear();
-			set.clear();
-		}
-		public boolean empty() {
-			return queue.size() == 0;
-		}
-	}
-	private World w;
+	private World world;
 	private UniqueHistoryQueue<Location> queue;
 	private int found;
+	private Player player;
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(sender instanceof Player) {
-			Player player = (Player) sender;
-			w = player.getWorld();
-			if(w.getEnvironment() != World.Environment.NETHER) {
+			player = (Player) sender;
+			world = player.getWorld();
+			if(world.getEnvironment() != World.Environment.NETHER) {
 				player.sendMessage("[" + ChatColor.RED + "ORB" + ChatColor.RESET + "]: Must be in the nether");
+				return false;
 			}
+			// setup traversal start block
 			queue = new UniqueHistoryQueue<>();
-			Location player_location = player.getLocation();
-			player_location.setX(player_location.getBlockX());
-			player_location.setZ(player_location.getBlockZ());
-			player_location.setY(127);
-			queue.push(player_location);
-			//player.sendMessage("[" + ChatColor.RED + "ORB" + ChatColor.RESET + "]: Conducting bedrock search. This will lag tf out of the server and may never end. Enjoy!");
-			Bukkit.broadcastMessage("[" + ChatColor.RED + "ORB" + ChatColor.RESET + "]: Conducting bedrock search. This will lag tf out of the server and possibly never end. Enjoy!");
+			Location start_block = player.getLocation();
+			start_block.setX(start_block.getBlockX());
+			start_block.setZ(start_block.getBlockZ());
+			start_block.setY(127);
+			queue.push(start_block);
+			// begin breadth-first traversal of the area around the player
+			player.sendMessage("[" + ChatColor.RED + "ORB" + ChatColor.RESET + "]: Conducting bedrock search...");
 			int checks = 0;
 			found = 0;
-			// Traverse area around the player breadth-first
 			while(!queue.empty()) {
 				Location l = queue.pop();
 				if(l.getY() != 127) {
-					Bukkit.broadcastMessage("[" + ChatColor.RED + "ORB" + ChatColor.RESET + "]: ERROR. Initial location Y=" + l.getY());
-					break;
+					player.sendMessage("[" + ChatColor.RED + "ORB" + ChatColor.RESET + "]: Internal Error: Initial location Y=" + l.getY());
+					return false;
 				}
 				check_location(l.clone());
 				checks++;
 				queue_adjacent(l);
-				//if(checks % 100 == 0)
-				//	Bukkit.broadcastMessage("[" + ChatColor.RED + "ORB" + ChatColor.RESET + "]: " + checks);
+				// avoid infinite search
 				if(checks > 10000)
 					break;
-				if(found >= 40)
+				// should be plenty of instances
+				if(found >= 15)
 					break;
 			}
-			Bukkit.broadcastMessage("[" + ChatColor.RED + "ORB" + ChatColor.RESET + "]: Bedrock search ended");
+			player.sendMessage("[" + ChatColor.RED + "ORB" + ChatColor.RESET + "]: Bedrock search ended");
 		}
 		return true;
 	}
@@ -79,11 +58,7 @@ public class CommandBedrockCageFinder implements CommandExecutor {
 		}
 	}
 	private void check_block(Location location) {
-		// top - just check center block
-		if(w.getBlockAt(location).getType() != Material.BEDROCK)
-			return;
 		boolean is_full_top = is_full_3x3(location);
-		// go down two levels
 		location.add(0, -1, 0);
 		boolean is_full_middle = is_full_3x3(location);
 		location.add(0, -1, 0);
@@ -91,21 +66,16 @@ public class CommandBedrockCageFinder implements CommandExecutor {
 		// reset
 		location.add(0, 2, 0);
 		// result
-		if(is_full_middle) {
-			if(is_full_bottom && is_full_top) {
-				Bukkit.broadcastMessage("[" + ChatColor.RED + "ORB" + ChatColor.RESET + "]: Instance: " + location.getX() + ", " + location.getZ() + " (3x3x3)");
-				found++;
-			} else {
-				//Bukkit.broadcastMessage("[" + ChatColor.RED + "ORB" + ChatColor.RESET + "]: Instance: " + location.getX() + ", " + location.getZ());
-			}
-
+		if(is_full_middle && is_full_bottom && is_full_top) {
+			player.sendMessage("[" + ChatColor.RED + "ORB" + ChatColor.RESET + "]: Instance: " + location.getX() + ", " + location.getZ());
+			found++;
 		}
 	}
 	private boolean is_full_3x3(Location location) {
 		for(int x = -1; x <= 1; x++) {
 			for(int z = -1; z <= 1; z++) {
 				location.add(x, 0, z);
-				if(w.getBlockAt(location).getType() != Material.BEDROCK) {
+				if(world.getBlockAt(location).getType() != Material.BEDROCK) {
 					// reset
 					location.subtract(x, 0, z);
 					return false;

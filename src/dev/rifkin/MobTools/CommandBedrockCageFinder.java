@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
-public class CommandBedrockFinder implements CommandExecutor {
+public class CommandBedrockCageFinder implements CommandExecutor {
 	private class UniqueHistoryQueue<T> {
 		private final LinkedList<T> queue = new LinkedList<T>();
 		private final HashSet<T> set = new HashSet<T>();

@@ -10,7 +10,7 @@ commands:
     usage: /mksphere <radius> [semisphere?] [force visible?]
   cancelspheres:
     description: deletes summoned particle spheres
-    usage: /cancelspheres
+    usage: /cancelspheres [cancel all?]
   showspawn:
     description: visualize spawnable spaces
     usage: /showspawn

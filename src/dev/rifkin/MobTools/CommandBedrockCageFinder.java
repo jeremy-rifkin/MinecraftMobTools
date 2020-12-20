@@ -58,12 +58,14 @@ public class CommandBedrockCageFinder implements CommandExecutor {
 		return true;
 	}
 	private void check_location(Location location) {
-		for(int i = 0; i < 5; i++) {
+		// could reduce brute force work done here, but this is so fast it doesn't matter
+		for(int i = 0; i < 3; i++) {
 			check_block(location);
 			location.subtract(0, -1, 0);
 		}
 	}
 	private void check_block(Location location) {
+		// could reduce brute force work done here too, but this is so fast it doesn't matter
 		boolean is_full_top = is_full_3x3(location);
 		location.add(0, -1, 0);
 		boolean is_full_middle = is_full_3x3(location);

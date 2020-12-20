@@ -59,9 +59,83 @@ public class SpawnGenerator extends BukkitRunnable {
 				light_level = 11;
 				break;
 		}
-		for(int y = location.getBlockY() - 16; y < location.getBlockY() + 16; y++) {
-			for(int x = location.getBlockX() - 32; x < location.getBlockX() + 32; x++) {
-				for(int z = location.getBlockZ() - 32; z < location.getBlockZ() + 32; z++) {
+		// as experimentally determined, the most cache-friendly loop orders are
+		// x z y
+		// z x y
+		// https://spark.lucko.me/#5Mx0WacxmW
+		// https://spark.lucko.me/#gI9ywZcNoj
+		// https://spark.lucko.me/#uq3UFrj3ku
+		// very close performance between the two, just as long as y is in the most inner loop
+		for(int y = location.getBlockY() - 32; y < location.getBlockY() + 32; y++) {
+			for(int x = location.getBlockX() - 64; x < location.getBlockX() + 64; x++) {
+				for(int z = location.getBlockZ() - 64; z < location.getBlockZ() + 64; z++) {
+					l.setX(x + 0.5);
+					l.setY(y + 0.5);
+					l.setZ(z + 0.5);
+					//l.setX(x);
+					//l.setY(y);
+					//l.setZ(z);
+					Block b = w.getBlockAt(l);
+					// Can't spawn in a block
+					if(SolidBlocks.lookup(b)) {
+						continue;
+					}
+					l.add(0, -1, 0);
+					Block bb = w.getBlockAt(l);
+					l.add(0, 1, 0);
+					if(SolidBlocks.lookup(bb)) {
+						if(bb.getType().isOccluding() && bb.getType() != Material.BEDROCK && b.getType().isAir() && b.getLightLevel() <= light_level) {
+							//w.spawnParticle(Particle.SPELL_WITCH, l, 1, 0, 0, 0, 0);
+							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, red_dust);
+							w.spawnParticle(Particle.FIREWORKS_SPARK, l, 1, 0, 0, 0, 0);
+						} else {
+							if(ticks_since_last == 0) {
+								w.spawnParticle(Particle.VILLAGER_HAPPY, l, 1, 0, 0, 0, 0);
+							}
+							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, green_dust);
+						}
+					}
+				}
+			}
+		}
+
+		check_a();
+		check_b();
+		check_c();
+		check_d();
+		check_e();
+		check_f();
+
+		check_e();
+		check_b();
+		check_c();
+		check_d();
+		check_a();
+		check_f();
+
+		ticks_since_last += 10;
+		if(ticks_since_last >= green_ticks) {
+			ticks_since_last = 0;
+		}
+	}
+	// x y z
+	private void check_a() {
+		Location location = player.getLocation();
+		World w = player.getWorld();
+		Location l = location.clone();
+		int light_level = 15;
+		switch(w.getEnvironment()) {
+			case NORMAL:
+			case NETHER:
+				light_level = 7;
+				break;
+			case THE_END:
+				light_level = 11;
+				break;
+		}
+		for(int x = location.getBlockX() - 64; x < location.getBlockX() + 64; x++) {
+			for(int y = location.getBlockY() - 32; y < location.getBlockY() + 32; y++) {
+				for(int z = location.getBlockZ() - 64; z < location.getBlockZ() + 64; z++) {
 					l.setX(x + 0.5);
 					l.setY(y + 0.5);
 					l.setZ(z + 0.5);
@@ -88,9 +162,230 @@ public class SpawnGenerator extends BukkitRunnable {
 				}
 			}
 		}
-		ticks_since_last += 10;
-		if(ticks_since_last >= green_ticks) {
-			ticks_since_last = 0;
+	}
+	// x z y
+	private void check_b() {
+		Location location = player.getLocation();
+		World w = player.getWorld();
+		Location l = location.clone();
+		int light_level = 15;
+		switch(w.getEnvironment()) {
+			case NORMAL:
+			case NETHER:
+				light_level = 7;
+				break;
+			case THE_END:
+				light_level = 11;
+				break;
+		}
+		for(int x = location.getBlockX() - 64; x < location.getBlockX() + 64; x++) {
+			for(int z = location.getBlockZ() - 64; z < location.getBlockZ() + 64; z++) {
+				for(int y = location.getBlockY() - 32; y < location.getBlockY() + 32; y++) {
+					l.setX(x + 0.5);
+					l.setY(y + 0.5);
+					l.setZ(z + 0.5);
+					Block b = w.getBlockAt(l);
+					// Can't spawn in a block
+					if(SolidBlocks.lookup(b)) {
+						continue;
+					}
+					l.add(0, -1, 0);
+					Block bb = w.getBlockAt(l);
+					l.add(0, 1, 0);
+					if(SolidBlocks.lookup(bb)) {
+						if(bb.getType().isOccluding() && bb.getType() != Material.BEDROCK && b.getType().isAir() && b.getLightLevel() <= light_level) {
+							//w.spawnParticle(Particle.SPELL_WITCH, l, 1, 0, 0, 0, 0);
+							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, red_dust);
+							w.spawnParticle(Particle.FIREWORKS_SPARK, l, 1, 0, 0, 0, 0);
+						} else {
+							if(ticks_since_last == 0) {
+								w.spawnParticle(Particle.VILLAGER_HAPPY, l, 1, 0, 0, 0, 0);
+							}
+							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, green_dust);
+						}
+					}
+				}
+			}
+		}
+	}
+	// y x z
+	private void check_c() {
+		Location location = player.getLocation();
+		World w = player.getWorld();
+		Location l = location.clone();
+		int light_level = 15;
+		switch(w.getEnvironment()) {
+			case NORMAL:
+			case NETHER:
+				light_level = 7;
+				break;
+			case THE_END:
+				light_level = 11;
+				break;
+		}
+		for(int y = location.getBlockY() - 32; y < location.getBlockY() + 32; y++) {
+			for(int x = location.getBlockX() - 64; x < location.getBlockX() + 64; x++) {
+				for(int z = location.getBlockZ() - 64; z < location.getBlockZ() + 64; z++) {
+					l.setX(x + 0.5);
+					l.setY(y + 0.5);
+					l.setZ(z + 0.5);
+					Block b = w.getBlockAt(l);
+					// Can't spawn in a block
+					if(SolidBlocks.lookup(b)) {
+						continue;
+					}
+					l.add(0, -1, 0);
+					Block bb = w.getBlockAt(l);
+					l.add(0, 1, 0);
+					if(SolidBlocks.lookup(bb)) {
+						if(bb.getType().isOccluding() && bb.getType() != Material.BEDROCK && b.getType().isAir() && b.getLightLevel() <= light_level) {
+							//w.spawnParticle(Particle.SPELL_WITCH, l, 1, 0, 0, 0, 0);
+							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, red_dust);
+							w.spawnParticle(Particle.FIREWORKS_SPARK, l, 1, 0, 0, 0, 0);
+						} else {
+							if(ticks_since_last == 0) {
+								w.spawnParticle(Particle.VILLAGER_HAPPY, l, 1, 0, 0, 0, 0);
+							}
+							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, green_dust);
+						}
+					}
+				}
+			}
+		}
+	}
+	// y z x
+	private void check_d() {
+		Location location = player.getLocation();
+		World w = player.getWorld();
+		Location l = location.clone();
+		int light_level = 15;
+		switch(w.getEnvironment()) {
+			case NORMAL:
+			case NETHER:
+				light_level = 7;
+				break;
+			case THE_END:
+				light_level = 11;
+				break;
+		}
+		for(int y = location.getBlockY() - 32; y < location.getBlockY() + 32; y++) {
+			for(int z = location.getBlockZ() - 64; z < location.getBlockZ() + 64; z++) {
+				for(int x = location.getBlockX() - 64; x < location.getBlockX() + 64; x++) {
+					l.setX(x + 0.5);
+					l.setY(y + 0.5);
+					l.setZ(z + 0.5);
+					Block b = w.getBlockAt(l);
+					// Can't spawn in a block
+					if(SolidBlocks.lookup(b)) {
+						continue;
+					}
+					l.add(0, -1, 0);
+					Block bb = w.getBlockAt(l);
+					l.add(0, 1, 0);
+					if(SolidBlocks.lookup(bb)) {
+						if(bb.getType().isOccluding() && bb.getType() != Material.BEDROCK && b.getType().isAir() && b.getLightLevel() <= light_level) {
+							//w.spawnParticle(Particle.SPELL_WITCH, l, 1, 0, 0, 0, 0);
+							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, red_dust);
+							w.spawnParticle(Particle.FIREWORKS_SPARK, l, 1, 0, 0, 0, 0);
+						} else {
+							if(ticks_since_last == 0) {
+								w.spawnParticle(Particle.VILLAGER_HAPPY, l, 1, 0, 0, 0, 0);
+							}
+							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, green_dust);
+						}
+					}
+				}
+			}
+		}
+	}
+	// z x y
+	private void check_e() {
+		Location location = player.getLocation();
+		World w = player.getWorld();
+		Location l = location.clone();
+		int light_level = 15;
+		switch(w.getEnvironment()) {
+			case NORMAL:
+			case NETHER:
+				light_level = 7;
+				break;
+			case THE_END:
+				light_level = 11;
+				break;
+		}
+		for(int z = location.getBlockZ() - 64; z < location.getBlockZ() + 64; z++) {
+			for(int x = location.getBlockX() - 64; x < location.getBlockX() + 64; x++) {
+				for(int y = location.getBlockY() - 32; y < location.getBlockY() + 32; y++) {
+					l.setX(x + 0.5);
+					l.setY(y + 0.5);
+					l.setZ(z + 0.5);
+					Block b = w.getBlockAt(l);
+					// Can't spawn in a block
+					if(SolidBlocks.lookup(b)) {
+						continue;
+					}
+					l.add(0, -1, 0);
+					Block bb = w.getBlockAt(l);
+					l.add(0, 1, 0);
+					if(SolidBlocks.lookup(bb)) {
+						if(bb.getType().isOccluding() && bb.getType() != Material.BEDROCK && b.getType().isAir() && b.getLightLevel() <= light_level) {
+							//w.spawnParticle(Particle.SPELL_WITCH, l, 1, 0, 0, 0, 0);
+							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, red_dust);
+							w.spawnParticle(Particle.FIREWORKS_SPARK, l, 1, 0, 0, 0, 0);
+						} else {
+							if(ticks_since_last == 0) {
+								w.spawnParticle(Particle.VILLAGER_HAPPY, l, 1, 0, 0, 0, 0);
+							}
+							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, green_dust);
+						}
+					}
+				}
+			}
+		}
+	}
+	// z y x
+	private void check_f() {
+		Location location = player.getLocation();
+		World w = player.getWorld();
+		Location l = location.clone();
+		int light_level = 15;
+		switch(w.getEnvironment()) {
+			case NORMAL:
+			case NETHER:
+				light_level = 7;
+				break;
+			case THE_END:
+				light_level = 11;
+				break;
+		}
+		for(int z = location.getBlockZ() - 64; z < location.getBlockZ() + 64; z++) {
+			for(int y = location.getBlockY() - 32; y < location.getBlockY() + 32; y++) {
+				for(int x = location.getBlockX() - 64; x < location.getBlockX() + 64; x++) {
+					l.setX(x + 0.5);
+					l.setY(y + 0.5);
+					l.setZ(z + 0.5);
+					Block b = w.getBlockAt(l);
+					// Can't spawn in a block
+					if(SolidBlocks.lookup(b)) {
+						continue;
+					}
+					l.add(0, -1, 0);
+					Block bb = w.getBlockAt(l);
+					l.add(0, 1, 0);
+					if(SolidBlocks.lookup(bb)) {
+						if(bb.getType().isOccluding() && bb.getType() != Material.BEDROCK && b.getType().isAir() && b.getLightLevel() <= light_level) {
+							//w.spawnParticle(Particle.SPELL_WITCH, l, 1, 0, 0, 0, 0);
+							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, red_dust);
+							w.spawnParticle(Particle.FIREWORKS_SPARK, l, 1, 0, 0, 0, 0);
+						} else {
+							if(ticks_since_last == 0) {
+								w.spawnParticle(Particle.VILLAGER_HAPPY, l, 1, 0, 0, 0, 0);
+							}
+							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, green_dust);
+						}
+					}
+				}
+			}
 		}
 	}
 }

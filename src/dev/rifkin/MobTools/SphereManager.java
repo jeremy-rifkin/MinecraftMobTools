@@ -1,6 +1,5 @@
 package dev.rifkin.MobTools;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -29,10 +28,14 @@ public class SphereManager {
 	}
 	public static void cancelTasks(Player player) {
 		ArrayList<BukkitTask> tasks = spheres.get(player.getUniqueId());
-		for(BukkitTask task : spheres.get(player.getUniqueId())) {
-			task.cancel();
+		// No action needed if tasks is null
+		if(tasks != null) {
+			for(BukkitTask task : tasks) {
+				task.cancel();
+			}
+			tasks.clear();
+			spheres.remove(player.getUniqueId());
 		}
-		tasks.clear();
 		player.sendMessage("[" + ChatColor.GREEN + "ORB" + ChatColor.RESET + "]: removed spheres");
 	}
 	public static void cancelAllTasks() {
@@ -42,5 +45,6 @@ public class SphereManager {
 			}
 			tasks.clear();
 		}
+		spheres.clear();
 	}
 }

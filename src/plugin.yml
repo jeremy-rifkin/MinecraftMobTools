@@ -8,12 +8,12 @@ commands:
   mksphere:
     description: makes a particle sphere
     usage: /mksphere <radius> [semisphere?] [force visible?]
-  dspheres:
+  cancelspheres:
     description: deletes summoned particle spheres
     usage: /cancelspheres
   showspawn:
     description: visualize spawnable spaces
     usage: /showspawn
-  bedrocklocate:
+  locatebedrockcage:
     description: locate a 3x3x3 bedrock "cage"
     usage: /locatebedrockcage

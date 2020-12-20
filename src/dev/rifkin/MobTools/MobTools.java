@@ -1,18 +1,10 @@
 package dev.rifkin.MobTools;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
-
-import java.util.ArrayList;
 
 public class MobTools extends JavaPlugin {
 	private static MobTools pluginInstance;
 	/*
-	TODO: Player-owned spheres / spawn visualizers so player can just cancel their's? OP needs to be able to cancel all.
-	TODO: Command to stop showing spawns
 	TODO: Better particles
 	TODO: Blocks above?
 	 */
@@ -29,6 +21,8 @@ public class MobTools extends JavaPlugin {
 		SolidBlocks.setup();
 		// setup the hash map for player spheres
 		SphereManager.setup();
+		// spawn visualizer keeps track of its own tasks too...
+		CommandShowspawn.setup();
 	}
 	@Override
 	public void onDisable() {

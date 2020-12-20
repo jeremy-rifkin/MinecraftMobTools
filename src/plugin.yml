@@ -14,3 +14,6 @@ commands:
   showspawn:
     description: show spawnable spaces
     usage: /showspawn
+  bedrocklocate:
+    description: bedrocklocate
+    usage: /bedrocklocate

@@ -22,6 +22,7 @@ public class MobTools extends JavaPlugin {
 		this.getCommand("mksphere").setExecutor(new CommandMksphere());
 		this.getCommand("dspheres").setExecutor(new CommandCancel());
 		this.getCommand("showspawn").setExecutor(new CommandShowspawn());
+		this.getCommand("bedrocklocate").setExecutor(new CommandBedrockFinder());
 		SolidBlocks.setup();
 	}
 	@Override

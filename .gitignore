@@ -2,7 +2,7 @@ spigot-1.16.4.jar
 spigot-api-1.16.4-R0.1-20201203.083325-28.jar
 
 # intellij ignores
-out/
+out/production
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/**/usage.statistics.xml

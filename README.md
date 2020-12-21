@@ -2,6 +2,8 @@
 
 This is a Minecraft plugin with some utilities to help with making mob farms and spawn-proofing the surrounding area. This plugin adds a command to draw a sphere around a player (or spawn radius around an afk platform) and a utility to display spawnable blocks around the player. It also adds a command to search the nether roof for a 3x3x3 bedrock "cage" for fighting the wither.
 
+[**Download**](https://github.com/jeremy-rifkin/MinecraftMobTools/raw/master/out/artifacts/MobTools_jar/MobTools.jar)
+
 ## Spheres
 
 `/mksphere <radius> [semisphere?] [force visible?]`

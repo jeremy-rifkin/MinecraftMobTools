@@ -17,16 +17,9 @@ This is useful for visualizing a spawn radius around an afk platform, simply run
 
 Use `/cancelspheres` to despawn summoned spheres, and a server operator can use `/cancelspheres all` to remove every particle sphere.
 
-![](screenshots/2020-12-10_19.13.42.png)
-![](screenshots/2020-12-10_19.13.50.png)
 ![](screenshots/2020-12-10_19.13.57.png)
-![](screenshots/2020-12-10_19.17.03.png)
-![](screenshots/2020-12-10_19.17.12.png)
-![](screenshots/2020-12-10_19.18.08.png)
-![](screenshots/2020-12-10_23.06.00.png)
 ![](screenshots/2020-12-10_23.06.05.png)
 ![](screenshots/2020-12-10_23.15.59.png)
-![](screenshots/2020-12-11_02.39.46.png)
 
 ## Spawn Visualization
 
@@ -34,12 +27,10 @@ Use `/cancelspheres` to despawn summoned spheres, and a server operator can use 
 
 Running `/showspawn` again will stop showing spawnable spaces.
 
-![](screenshots/2020-12-15_17.47.48.png)
-![](screenshots/2020-12-15_17.48.43.png)
-![](screenshots/2020-12-15_17.57.12.png)
-![](screenshots/2020-12-15_17.59.40.png)
-![](screenshots/2020-12-20_16.59.27.png)
 ![](screenshots/2020-12-20_16.59.39.png)
+![](screenshots/2020-12-20_16.59.27.png)
+![](screenshots/2020-12-15_17.47.48.png)
+![](screenshots/2020-12-15_17.57.12.png)
 
 ## Wither Cage Finder
 
@@ -47,9 +38,3 @@ Running `/showspawn` again will stop showing spawnable spaces.
 
 ![](screenshots/2020-12-20_16.40.36.png)
 ![](screenshots/2020-12-19_18.18.20.png)
-
-![](screenshots/2020-12-19_17.55.39.png)
-![](screenshots/2020-12-19_17.55.43.png)
-![](screenshots/2020-12-20_16.40.26.png)
-![](screenshots/2020-12-20_16.40.31.png)
-![](screenshots/2020-12-20_16.40.45.png)

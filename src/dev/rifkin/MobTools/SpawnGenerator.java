@@ -60,7 +60,7 @@ public class SpawnGenerator extends BukkitRunnable {
 					Block bb = w.getBlockAt(l);
 					l.add(0, 1, 0);
 					if(SolidBlocks.lookup(bb)) {
-						if(bb.getType().isOccluding() && bb.getType() != Material.BEDROCK && b.getType().isAir() && b.getLightLevel() <= light_level) {
+						if(bb.getType().isOccluding() && bb.getType() != Material.BEDROCK && b.getType().isAir() && b.getLightFromBlocks() <= light_level) {
 							//w.spawnParticle(Particle.SPELL_WITCH, l, 1, 0, 0, 0, 0);
 							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, red_dust);
 							w.spawnParticle(Particle.FIREWORKS_SPARK, l, 1, 0, 0, 0, 0);

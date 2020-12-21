@@ -18,13 +18,13 @@ This is useful for visualizing a spawn radius around an afk platform, simply run
 
 Use `/cancelspheres` to despawn summoned spheres, and a server operator can use `/cancelspheres all` to remove every particle sphere.
 
-![](screenshots/2020-12-10_19.13.57.png)
+![](screenshots/jpg/2020-12-10_19.13.57.jpg)
 Sphere showing the spawn radius around an afk platform. This mob farm is high off the ground so no mob proofing needed to be done.
 
-![](screenshots/2020-12-10_23.06.05.png)
+![](screenshots/jpg/2020-12-10_23.06.05.jpg)
 Spawn radius sphere being used to spawn-proof part of the nether.
 
-![](screenshots/2020-12-10_23.15.59.png)
+![](screenshots/jpg/2020-12-10_23.15.59.jpg)
 Spawn radius sphere identifying part of a nether roof cave in spawn range.
 
 
@@ -34,24 +34,24 @@ Spawn radius sphere identifying part of a nether roof cave in spawn range.
 
 Running `/showspawn` again will stop showing spawnable spaces.
 
-![](screenshots/2020-12-20_16.59.39.png)
+![](screenshots/jpg/2020-12-20_16.59.39.jpg)
 Particles showing where mobs can spawn in a base.
 
-![](screenshots/2020-12-20_16.59.27.png)
+![](screenshots/jpg/2020-12-20_16.59.27.jpg)
 Low-light spawnable spaces between torches.
 
-![](screenshots/2020-12-15_17.47.48.png)
+![](screenshots/jpg/2020-12-15_17.47.48.jpg)
 Spawnable spaces on a warped fungus.
 
-![](screenshots/2020-12-15_17.57.12.png)
+![](screenshots/jpg/2020-12-15_17.57.12.jpg)
 Particles showing missed blocks in a previously spawn-proofed area.
 
 ## Wither Cage Finder
 
 `/locatebedrockcage` will scan the area surrounding the player and locate a 3x3x3 bedrock cube in the nether. This formation is useful as a cage to trap and kill a wither.
 
-![](screenshots/2020-12-20_16.40.36.png)
+![](screenshots/jpg/2020-12-20_16.40.36.jpg)
 Wither trapped in a wither cage.
 
-![](screenshots/2020-12-19_18.18.20.png)
+![](screenshots/jpg/2020-12-19_18.18.20.jpg)
 Wither spawning machine used to spawn dozens of withers in a wither cage.

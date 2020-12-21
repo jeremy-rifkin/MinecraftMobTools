@@ -28,7 +28,7 @@ public class SphereManager {
 	}
 	public static void cancelTasks(Player player) {
 		ArrayList<BukkitTask> tasks = spheres.get(player.getUniqueId());
-		// No action needed if tasks is null
+		// No action needed if player has no spheres
 		if(tasks != null) {
 			for(BukkitTask task : tasks) {
 				task.cancel();

@@ -1,5 +1,12 @@
 package dev.rifkin.MobTools;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MobTools extends JavaPlugin {
@@ -7,6 +14,7 @@ public class MobTools extends JavaPlugin {
 	/*
 	TODO: Better particles
 	TODO: Blocks above?
+	TODO: Player disconnect
 	 */
 	@Override
 	public void onEnable() {
@@ -23,6 +31,17 @@ public class MobTools extends JavaPlugin {
 		SphereManager.setup();
 		// spawn visualizer keeps track of its own tasks too...
 		CommandShowspawn.setup();
+		// setup disconnect listener
+		Bukkit.getPluginManager().registerEvents(new Listener() {
+			@EventHandler
+			private void onPlayerQuit(final PlayerQuitEvent e) {
+				handlePlayerDC(e);
+			}
+			@EventHandler
+			private void onPlayerKicked(final PlayerKickEvent e) {
+				handlePlayerDC(e);
+			}
+		}, this);
 	}
 	@Override
 	public void onDisable() {
@@ -30,5 +49,9 @@ public class MobTools extends JavaPlugin {
 	}
 	public static MobTools getInstance() {
 		return pluginInstance;
+	}
+	private void handlePlayerDC(PlayerEvent e) {
+		SphereManager.cancelTasks(e.getPlayer());
+		CommandShowspawn.cancelPlayersVisualizationTaskIf(e.getPlayer());
 	}
 }

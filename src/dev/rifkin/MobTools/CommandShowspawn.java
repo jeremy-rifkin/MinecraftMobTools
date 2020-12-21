@@ -48,4 +48,9 @@ public class CommandShowspawn implements CommandExecutor {
 		generator_tasks.get(player.getUniqueId()).cancel();
 		generator_tasks.remove(player.getUniqueId());
 	}
+	public static void cancelPlayersVisualizationTaskIf(Player player) {
+		if(playerIsCurrentlyVisualizing(player)) {
+			cancelPlayersVisualizationTask(player);
+		}
+	}
 }

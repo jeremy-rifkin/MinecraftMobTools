@@ -33,7 +33,7 @@ public class SpawnGenerator extends BukkitRunnable {
 	//  b2() is chunking with outer loops z -> x and inner loops x -> z -> y
 	//  b3() is chunking with outer loops z -> x and inner loops z -> y -> x
 	//  c()  is chunking with outer loops x -> z and same inner loops as b()
-	// test code committed in _______
+	// test code committed in bea4ef4
 	// the best performance can be achieved by looping chunks z -> x
 	// the best setup for the inner loops is z -> x -> y
 
@@ -64,113 +64,6 @@ public class SpawnGenerator extends BukkitRunnable {
 				light_level = 11;
 				break;
 		}
-		/*for(int z = location.getBlockZ() - 32; z < location.getBlockZ() + 32; z++) {
-			for(int x = location.getBlockX() - 32; x < location.getBlockX() + 32; x++) {
-				for(int y = location.getBlockY() - 20; y < location.getBlockY() + 20; y++) {
-					l.setX(x + 0.5);
-					l.setY(y + 0.5);
-					l.setZ(z + 0.5);
-					Block b = w.getBlockAt(l);
-					// Can't spawn in a block
-					if(SolidBlocks.lookup(b)) {
-						continue;
-					}
-					// Get block below
-					l.add(0, -1, 0);
-					Block bb = w.getBlockAt(l);
-					l.add(0, 1, 0);
-					// If we're on a full block we should make an indicator
-					if(SolidBlocks.lookup(bb)) {
-						// Get block above
-						l.add(0, 1, 0);
-						Block ba = w.getBlockAt(l);
-						l.add(0, -1, 0);
-						// Check for valid spawning space
-						if(
-								// Block below needs be opaque and not be bedrock
-								bb.getType().isOccluding() &&
-								bb.getType() != Material.BEDROCK &&
-								// Current block needs to be air and be below the light threshold
-								b.getType().isAir() &&
-								b.getLightFromBlocks() <= light_level &&
-								// Block above needs to be opaque, free of liquid, and not obstruct a mob's bounding box
-								!ba.getType().isOccluding() &&
-								!ba.isLiquid() &&
-								!SolidBlocks.lookup(ba)
-							) {
-							//w.spawnParticle(Particle.SPELL_WITCH, l, 1, 0, 0, 0, 0);
-							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, red_dust);
-							w.spawnParticle(Particle.FIREWORKS_SPARK, l, 1, 0, 0, 0, 0);
-						} else {
-							if(ticks_since_last == 0) {
-								w.spawnParticle(Particle.VILLAGER_HAPPY, l, 1, 0, 0, 0, 0);
-							}
-							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, green_dust);
-						}
-					}
-				}
-			}
-		}*/
-		a(w, location, l, light_level);
-		b(w, location, l, light_level);
-		b2(w, location, l, light_level);
-		b3(w, location, l, light_level);
-		c(w, location, l, light_level);
-		ticks_since_last += 10;
-		if(ticks_since_last >= green_ticks) {
-			ticks_since_last = 0;
-		}
-	}
-	private void a(World w, Location location, Location l, int light_level) {
-		for(int z = location.getBlockZ() - 32; z <= location.getBlockZ() + 32; z++) {
-			for(int x = location.getBlockX() - 32; x <= location.getBlockX() + 32; x++) {
-				for(int y = location.getBlockY() - 20; y <= location.getBlockY() + 20; y++) {
-					l.setX(x + 0.5);
-					l.setY(y + 0.5);
-					l.setZ(z + 0.5);
-					Block b = w.getBlockAt(l);
-					// Can't spawn in a block
-					if(SolidBlocks.lookup(b)) {
-						continue;
-					}
-					// Get block below
-					l.add(0, -1, 0);
-					Block bb = w.getBlockAt(l);
-					l.add(0, 1, 0);
-					// If we're on a full block we should make an indicator
-					if(SolidBlocks.lookup(bb)) {
-						// Get block above
-						l.add(0, 1, 0);
-						Block ba = w.getBlockAt(l);
-						l.add(0, -1, 0);
-						// Check for valid spawning space
-						if(
-							// Block below needs be opaque and not be bedrock
-							bb.getType().isOccluding() &&
-							bb.getType() != Material.BEDROCK &&
-							// Current block needs to be air and be below the light threshold
-							b.getType().isAir() &&
-							b.getLightFromBlocks() <= light_level &&
-							// Block above needs to be opaque, free of liquid, and not obstruct a mob's bounding box
-							!ba.getType().isOccluding() &&
-							!ba.isLiquid() &&
-							!SolidBlocks.lookup(ba)
-							) {
-							//w.spawnParticle(Particle.SPELL_WITCH, l, 1, 0, 0, 0, 0);
-							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, red_dust);
-							w.spawnParticle(Particle.FIREWORKS_SPARK, l, 1, 0, 0, 0, 0);
-						} else {
-							if(ticks_since_last == 0) {
-								w.spawnParticle(Particle.VILLAGER_HAPPY, l, 1, 0, 0, 0, 0);
-							}
-							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, green_dust);
-						}
-					}
-				}
-			}
-		}
-	}
-	private void b(World w, Location location, Location l, int light_level) {
 		int X = location.getBlockX();
 		int Y = location.getBlockY();
 		int Z = location.getBlockZ();
@@ -196,16 +89,16 @@ public class SpawnGenerator extends BukkitRunnable {
 								Block ba = c.getBlock(x, y + 1, z);
 								// Check for valid spawning space
 								if(
-										// Block below needs be opaque and not be bedrock
-										bb.getType().isOccluding() &&
-										bb.getType() != Material.BEDROCK &&
-										// Current block needs to be air and be below the light threshold
-										b.getType().isAir() &&
-										b.getLightFromBlocks() <= light_level &&
-										// Block above needs to be opaque, free of liquid, and not obstruct a mob's bounding box
-										!ba.getType().isOccluding() &&
-										!ba.isLiquid() &&
-										!SolidBlocks.lookup(ba)
+									// Block below needs be opaque and not be bedrock
+									bb.getType().isOccluding() &&
+									bb.getType() != Material.BEDROCK &&
+									// Current block needs to be air and be below the light threshold
+									b.getType().isAir() &&
+									b.getLightFromBlocks() <= light_level &&
+									// Block above needs to be opaque, free of liquid, and not obstruct a mob's bounding box
+									!ba.getType().isOccluding() &&
+									!ba.isLiquid() &&
+									!SolidBlocks.lookup(ba)
 									) {
 									//w.spawnParticle(Particle.SPELL_WITCH, l, 1, 0, 0, 0, 0);
 									//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, red_dust);
@@ -222,164 +115,9 @@ public class SpawnGenerator extends BukkitRunnable {
 				}
 			}
 		}
-	}
-	private void b2(World w, Location location, Location l, int light_level) {
-		int X = location.getBlockX();
-		int Y = location.getBlockY();
-		int Z = location.getBlockZ();
-		for(int cz = (Z - 32) >> 4; cz <= (Z + 32) >> 4; cz++) {
-			for(int cx = (X - 32) >> 4; cx <= (X + 32) >> 4; cx++) {
-				Chunk c = w.getChunkAt(cx, cz);
-				for(int x = Math.max(X - 32, cx << 4) & 0xf; x <= (Math.min(X + 32, (cx + 1) << 4) & 0xf); x++) {
-					for(int z = Math.max(Z - 32, cz << 4) & 0xf; z <= (Math.min(Z + 32, (cz + 1) << 4) & 0xf); z++) {
-						for(int y = Y - 20; y <= Y + 20; y++) {
-							l.setX(x + 0.5);
-							l.setY(y + 0.5);
-							l.setZ(z + 0.5);
-							Block b = c.getBlock(x, y, z);
-							// Can't spawn in a block
-							if(SolidBlocks.lookup(b)) {
-								continue;
-							}
-							// Get block below
-							Block bb = c.getBlock(x, y - 1, z);
-							// If we're on a full block we should make an indicator
-							if(SolidBlocks.lookup(bb)) {
-								// Get block above
-								Block ba = c.getBlock(x, y + 1, z);
-								// Check for valid spawning space
-								if(
-									// Block below needs be opaque and not be bedrock
-										bb.getType().isOccluding() &&
-												bb.getType() != Material.BEDROCK &&
-												// Current block needs to be air and be below the light threshold
-												b.getType().isAir() &&
-												b.getLightFromBlocks() <= light_level &&
-												// Block above needs to be opaque, free of liquid, and not obstruct a mob's bounding box
-												!ba.getType().isOccluding() &&
-												!ba.isLiquid() &&
-												!SolidBlocks.lookup(ba)
-								) {
-									//w.spawnParticle(Particle.SPELL_WITCH, l, 1, 0, 0, 0, 0);
-									//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, red_dust);
-									w.spawnParticle(Particle.FIREWORKS_SPARK, l, 1, 0, 0, 0, 0);
-								} else {
-									if(ticks_since_last == 0) {
-										w.spawnParticle(Particle.VILLAGER_HAPPY, l, 1, 0, 0, 0, 0);
-									}
-									//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, green_dust);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	private void b3(World w, Location location, Location l, int light_level) {
-		int X = location.getBlockX();
-		int Y = location.getBlockY();
-		int Z = location.getBlockZ();
-		for(int cz = (Z - 32) >> 4; cz <= (Z + 32) >> 4; cz++) {
-			for(int cx = (X - 32) >> 4; cx <= (X + 32) >> 4; cx++) {
-				Chunk c = w.getChunkAt(cx, cz);
-				for(int z = Math.max(Z - 32, cz << 4) & 0xf; z <= (Math.min(Z + 32, (cz + 1) << 4) & 0xf); z++) {
-					for(int y = Y - 20; y <= Y + 20; y++) {
-						for(int x = Math.max(X - 32, cx << 4) & 0xf; x <= (Math.min(X + 32, (cx + 1) << 4) & 0xf); x++) {
-							l.setX(x + 0.5);
-							l.setY(y + 0.5);
-							l.setZ(z + 0.5);
-							Block b = c.getBlock(x, y, z);
-							// Can't spawn in a block
-							if(SolidBlocks.lookup(b)) {
-								continue;
-							}
-							// Get block below
-							Block bb = c.getBlock(x, y - 1, z);
-							// If we're on a full block we should make an indicator
-							if(SolidBlocks.lookup(bb)) {
-								// Get block above
-								Block ba = c.getBlock(x, y + 1, z);
-								// Check for valid spawning space
-								if(
-									// Block below needs be opaque and not be bedrock
-										bb.getType().isOccluding() &&
-												bb.getType() != Material.BEDROCK &&
-												// Current block needs to be air and be below the light threshold
-												b.getType().isAir() &&
-												b.getLightFromBlocks() <= light_level &&
-												// Block above needs to be opaque, free of liquid, and not obstruct a mob's bounding box
-												!ba.getType().isOccluding() &&
-												!ba.isLiquid() &&
-												!SolidBlocks.lookup(ba)
-								) {
-									//w.spawnParticle(Particle.SPELL_WITCH, l, 1, 0, 0, 0, 0);
-									//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, red_dust);
-									w.spawnParticle(Particle.FIREWORKS_SPARK, l, 1, 0, 0, 0, 0);
-								} else {
-									if(ticks_since_last == 0) {
-										w.spawnParticle(Particle.VILLAGER_HAPPY, l, 1, 0, 0, 0, 0);
-									}
-									//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, green_dust);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	private void c(World w, Location location, Location l, int light_level) {
-		int X = location.getBlockX();
-		int Y = location.getBlockY();
-		int Z = location.getBlockZ();
-		for(int cx = (X - 32) >> 4; cx <= (X + 32) >> 4; cx++) {
-			for(int cz = (Z - 32) >> 4; cz <= (Z + 32) >> 4; cz++) {
-				Chunk c = w.getChunkAt(cx, cz);
-				for(int z = Math.max(Z - 32, cz << 4) & 0xf; z <= (Math.min(Z + 32, (cz + 1) << 4) & 0xf); z++) {
-					for(int x = Math.max(X - 32, cx << 4) & 0xf; x <= (Math.min(X + 32, (cx + 1) << 4) & 0xf); x++) {
-						for(int y = Y - 20; y <= Y + 20; y++) {
-							l.setX(x + 0.5);
-							l.setY(y + 0.5);
-							l.setZ(z + 0.5);
-							Block b = c.getBlock(x, y, z);
-							// Can't spawn in a block
-							if(SolidBlocks.lookup(b)) {
-								continue;
-							}
-							// Get block below
-							Block bb = c.getBlock(x, y - 1, z);
-							// If we're on a full block we should make an indicator
-							if(SolidBlocks.lookup(bb)) {
-								// Get block above
-								Block ba = c.getBlock(x, y + 1, z);
-								// Check for valid spawning space
-								if(
-									// Block below needs be opaque and not be bedrock
-										bb.getType().isOccluding() &&
-												bb.getType() != Material.BEDROCK &&
-												// Current block needs to be air and be below the light threshold
-												b.getType().isAir() &&
-												b.getLightFromBlocks() <= light_level &&
-												// Block above needs to be opaque, free of liquid, and not obstruct a mob's bounding box
-												!ba.getType().isOccluding() &&
-												!ba.isLiquid() &&
-												!SolidBlocks.lookup(ba)
-								) {
-									//w.spawnParticle(Particle.SPELL_WITCH, l, 1, 0, 0, 0, 0);
-									//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, red_dust);
-									w.spawnParticle(Particle.FIREWORKS_SPARK, l, 1, 0, 0, 0, 0);
-								} else {
-									if(ticks_since_last == 0) {
-										w.spawnParticle(Particle.VILLAGER_HAPPY, l, 1, 0, 0, 0, 0);
-									}
-									//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, green_dust);
-								}
-							}
-						}
-					}
-				}
-			}
+		ticks_since_last += 10;
+		if(ticks_since_last >= green_ticks) {
+			ticks_since_last = 0;
 		}
 	}
 }

@@ -60,11 +60,29 @@ public class SpawnGenerator extends BukkitRunnable {
 					if(SolidBlocks.lookup(b)) {
 						continue;
 					}
+					// Get block below
 					l.add(0, -1, 0);
 					Block bb = w.getBlockAt(l);
 					l.add(0, 1, 0);
+					// If we're on a full block we should make an indicator
 					if(SolidBlocks.lookup(bb)) {
-						if(bb.getType().isOccluding() && bb.getType() != Material.BEDROCK && b.getType().isAir() && b.getLightFromBlocks() <= light_level) {
+						// Get block above
+						l.add(0, 1, 0);
+						Block ba = w.getBlockAt(l);
+						l.add(0, -1, 0);
+						// Check for valid spawning space
+						if(
+								// Block below needs be opaque and not be bedrock
+								bb.getType().isOccluding() &&
+								bb.getType() != Material.BEDROCK &&
+								// Current block needs to be air and be below the light threshold
+								b.getType().isAir() &&
+								b.getLightFromBlocks() <= light_level &&
+								// Block above needs to be opaque, free of liquid, and not obstruct a mob's bounding box
+								!ba.getType().isOccluding() &&
+								!ba.isLiquid() &&
+								!SolidBlocks.lookup(ba)
+							) {
 							//w.spawnParticle(Particle.SPELL_WITCH, l, 1, 0, 0, 0, 0);
 							//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, red_dust);
 							w.spawnParticle(Particle.FIREWORKS_SPARK, l, 1, 0, 0, 0, 0);

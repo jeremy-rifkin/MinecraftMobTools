@@ -34,6 +34,8 @@ Spawn radius sphere identifying part of a nether roof cave in spawn range.
 
 Running `/showspawn` again will stop showing spawnable spaces.
 
+`/showspawn` can also take a light level argument. Light level can be an integer 0-15 or "any". This is helpful for the nether which has complicated spawn rules. Running `/showspawn [light level]` will update the current visualization's light level instead of cancelling the current visualization.
+
 ![](screenshots/jpg/2020-12-20_16.59.39.jpg)
 Particles showing where mobs can spawn in a base.
 

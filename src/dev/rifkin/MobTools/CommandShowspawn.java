@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class CommandShowspawn implements CommandExecutor {
-	private static HashMap<UUID, BukkitTask> generator_tasks;
+	private static HashMap<UUID, Pair<BukkitTask, SpawnGenerator>> generator_tasks;
 	private static boolean did_setup = false;
 	public static void setup() {
 		if(did_setup)
@@ -23,12 +23,37 @@ public class CommandShowspawn implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(sender instanceof Player) {
 			Player player = (Player) sender;
+			// accept one positional argument
+			int light_level = -1; // -1 = default light-level based off of the environment
+			if(args.length > 0) {
+				if(args[0].toLowerCase().equals("any")) {
+					light_level = 15;
+				} else {
+					try {
+						light_level = Integer.parseInt(args[0]);
+					} catch(NumberFormatException e) {
+						Utils.SendErrorMsg(player, "Invalid light-level (must be integer or \"any\")");
+						return false;
+					}
+					if(light_level > 15 || light_level < 0) {
+						Utils.SendErrorMsg(player, "Invalid light-level (out of bounds 0-15)");
+						return false;
+					}
+				}
+			}
+			// create new task, cancel current visualizer task, or update current task
 			if(playerIsCurrentlyVisualizing(player)) {
-				cancelPlayersVisualizationTask(player);
+				// update if light level provided, otherwise cancel
+				if(light_level == -1) {
+					cancelPlayersVisualizationTask(player);
+				} else {
+					generator_tasks.get(player.getUniqueId()).b.updateLightLevel(light_level);
+				}
 			} else {
-				SpawnGenerator generator = new SpawnGenerator(player);
+				// setup task
+				SpawnGenerator generator = new SpawnGenerator(player, light_level);
 				BukkitTask task = generator.runTaskTimer(MobTools.getInstance(), 0, 10);
-				registerTask(task, player);
+				registerTask(task, generator, player);
 				// user info
 				player.sendMessage("[" + ChatColor.GREEN + "ORB" + ChatColor.RESET + "]: visualizing spawnable spaces around the user");
 				player.sendMessage("[" + ChatColor.GREEN + "ORB" + ChatColor.RESET + "]: use \"/showspawn\" again to stop showing spawnable spaces");
@@ -39,13 +64,13 @@ public class CommandShowspawn implements CommandExecutor {
 	private static boolean playerIsCurrentlyVisualizing(Player player) {
 		return generator_tasks.containsKey(player.getUniqueId());
 	}
-	private static void registerTask(BukkitTask task, Player player) {
+	private static void registerTask(BukkitTask task, SpawnGenerator generator, Player player) {
 		// this method is prone to overwriting a running task
 		// the way this method is invoked in onCommand ensures that doesn't happen
-		generator_tasks.put(player.getUniqueId(), task);
+		generator_tasks.put(player.getUniqueId(), new Pair<>(task, generator));
 	}
 	private static void cancelPlayersVisualizationTask(Player player) {
-		generator_tasks.get(player.getUniqueId()).cancel();
+		generator_tasks.get(player.getUniqueId()).a.cancel();
 		generator_tasks.remove(player.getUniqueId());
 	}
 	public static void cancelPlayersVisualizationTaskIf(Player player) {

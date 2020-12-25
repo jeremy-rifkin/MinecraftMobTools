@@ -1,6 +1,5 @@
 package dev.rifkin.MobTools;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -33,32 +32,53 @@ public class SpawnGenerator extends BukkitRunnable {
 	// https://spark.lucko.me/#FXwzIniVKE
 	// able to get a 164% performance boost with this
 
+	// spawning in the nether:
+	// Mob             Biome                                       Light level
+	// ===============|===========================================|====================
+	// Blaze          | Fortress                                  | <= 11
+	// Chicken Jockey | Any                                       | Any
+	// Enderman       | *Wastes, *Soul Valleys, $$Warped Forrests | <= 7
+	// Ghast          | Wastes, Soul Valleys, Deltas              | Any (5x4x5 empty space)
+	// Hoglin         | Crimson                                   | Any
+	// Magma Cubes    | Wastes, Deltas, Structures                | Any
+	// Piglins        | Wastes, Crimson                           | <= 11
+	// Skeleton       | Fortress, Soul Valley                     | <= 7
+	// Tall Bois      | Fortress                                  | <= 7
+	// Zombie Piglin  | $$Wastes, *Crimson, $$Fortress            | <= 11
+	//    *  = Uncommon
+	//    $$ = Frequent
+	// I can't check the nether fortress requirement and I also don't want to have several different particles
+	// reflecting different information. That'd be hard for the user. I'm going to set default light-level = 7 for the
+	// nether and the user can specify other light levels as they need.
+
 	private Player player;
 	private final static Particle.DustOptions red_dust = new Particle.DustOptions(Color.RED, 1);
 	private final static Particle.DustOptions green_dust = new Particle.DustOptions(Color.GREEN, 1);
 	private int ticks_since_last;
 	private final int green_ticks;
-	SpawnGenerator(Player player) {
+	private int set_light_level; // -1 = default based on environment, else fixed 0-15
+	SpawnGenerator(Player player, int light_level) {
 		this.player = player;
 		ticks_since_last = 0;
 		green_ticks = 20;
+		set_light_level = light_level;
 	}
 	@Override
 	public void run() {
 		Location location = player.getLocation();
 		World w = player.getWorld();
 		Location l = location.clone();
-		int light_level = 15;
-		switch(w.getEnvironment()) {
-			case NORMAL:
-				light_level = 7;
-				break;
-			case NETHER:
-				light_level = 15;
-				break;
-			case THE_END:
-				light_level = 11;
-				break;
+		int light_level = set_light_level;
+		if(light_level == -1) {
+			switch(w.getEnvironment()) {
+				case NORMAL:
+				case NETHER:
+					light_level = 7;
+					break;
+				case THE_END:
+					light_level = 11;
+					break;
+			}
 		}
 		int X = location.getBlockX();
 		int Y = location.getBlockY();
@@ -86,15 +106,15 @@ public class SpawnGenerator extends BukkitRunnable {
 								// Check for valid spawning space
 								if(
 									// Block below needs be opaque and not be bedrock
-										bb.getType().isOccluding() &&
-												bb.getType() != Material.BEDROCK &&
-												// Current block needs to be air and be below the light threshold
-												b.getType().isAir() &&
-												b.getLightFromBlocks() <= light_level &&
-												// Block above needs to be opaque, free of liquid, and not obstruct a mob's bounding box
-												!ba.getType().isOccluding() &&
-												!ba.isLiquid() &&
-												!SolidBlocks.lookup(ba)
+									bb.getType().isOccluding() &&
+									bb.getType() != Material.BEDROCK &&
+									// Current block needs to be air and be below the light threshold
+									b.getType().isAir() &&
+									b.getLightFromBlocks() <= light_level &&
+									// Block above needs to be opaque, free of liquid, and not obstruct a mob's bounding box
+									!ba.getType().isOccluding() &&
+									!ba.isLiquid() &&
+									!SolidBlocks.lookup(ba)
 								) {
 									//w.spawnParticle(Particle.SPELL_WITCH, l, 1, 0, 0, 0, 0);
 									//w.spawnParticle(Particle.REDSTONE, l, 1, 0, 0, 0, 0, red_dust);
@@ -115,5 +135,8 @@ public class SpawnGenerator extends BukkitRunnable {
 		if(ticks_since_last >= green_ticks) {
 			ticks_since_last = 0;
 		}
+	}
+	public void updateLightLevel(int light_level) {
+		set_light_level = light_level;
 	}
 }

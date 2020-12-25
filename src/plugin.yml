@@ -13,7 +13,7 @@ commands:
     usage: /cancelspheres [cancel all?]
   showspawn:
     description: visualize spawnable spaces
-    usage: /showspawn
+    usage: /showspawn [fixed light level]
   locatebedrockcage:
     description: locate a 3x3x3 bedrock "cage"
     usage: /locatebedrockcage

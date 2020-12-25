@@ -15,7 +15,7 @@ public class SolidBlocks {
 	public static void setup() {
 		if(did_setup)
 			throw new Error("setup called more than once");
-		solid_blocks = new HashMap<>();
+		solid_blocks = new HashMap<>(200, 0.5f);
 		did_setup = true;
 	}
 	public static boolean lookup(Block b) {

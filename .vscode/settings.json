@@ -1,0 +1,6 @@
+{
+	"java.project.referencedLibraries": [
+		"spigot-api-1.16.4-R0.1-20201203.083325-28.jar",
+		"spigot-1.16.4.jar"
+	]
+}

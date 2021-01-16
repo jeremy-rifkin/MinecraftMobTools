@@ -1,5 +1,5 @@
 name: MobTools
-version: 1.0
+version: 1.1
 author: Rifkin
 main: dev.rifkin.MobTools.MobTools
 api-version: 1.16
@@ -8,12 +8,33 @@ commands:
   mksphere:
     description: makes a particle sphere
     usage: /mksphere <radius> [semisphere?] [force visible?]
+    permission: mobtools.spheres
   cancelspheres:
     description: deletes summoned particle spheres
     usage: /cancelspheres [cancel all?]
+    permission: mobtools.spheres
   showspawn:
     description: visualize spawnable spaces
     usage: /showspawn [fixed light level]
+    permission: mobtools.showspawn
   locatebedrockcage:
     description: locate a 3x3x3 bedrock "cage"
     usage: /locatebedrockcage
+    permission: mobtools.locatebedrockcage
+permissions:
+  mobtools.spheres:
+    description: permission to create and remove spheres
+    default: false
+  mobtools.showspawn:
+    description: gives access to the /showspawn command
+    default: false
+  mobtools.locatebedrockcage:
+    description: gives access to the /locatebedrockcage command
+    default: false
+  mobtools.all:
+    description: permissions for all mob tools
+    default: op
+    children:
+      mobtools.spheres: true
+      mobtools.showspawn: true
+      mobtools.locatebedrockcage: true

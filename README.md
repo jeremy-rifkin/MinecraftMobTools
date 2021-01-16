@@ -4,6 +4,12 @@ This is a Minecraft plugin with some utilities to help with making mob farms and
 
 [**Download**](https://github.com/jeremy-rifkin/MinecraftMobTools/raw/master/out/artifacts/MobTools_jar/MobTools.jar)
 
+### Table of contents:
+- [Spheres](#spheres)
+- [Spawn Visualization](#spawn-visualization)
+- [Wither Cage Finder](#wither-cage-finder)
+- [Permissions](#permissions)
+
 ## Spheres
 
 `/mksphere <radius> [semisphere?] [force visible?]`
@@ -57,3 +63,14 @@ Wither trapped in a wither cage.
 
 ![](screenshots/jpg/2020-12-19_18.18.20.jpg)
 Wither spawning machine used to spawn dozens of withers in a wither cage.
+
+## Permissions
+
+The plugin defines the following permission nodes:
+
+| node | default | description |
+-- | -- | --
+`mobtools.spheres` | `false` | permission to create and remove spheres
+`mobtools.showspawn` | `false` | gives access to the /showspawn command
+`mobtools.locatebedrockcage` | `false` | gives access to the /locatebedrockcage command
+`mobtools.all` | `op` | gives access to all commands
